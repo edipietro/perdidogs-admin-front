@@ -3,7 +3,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { userService } from '../../services/UserService'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
+import { Button, LinearProgress } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -11,7 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
- 
+
 import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Login: React.FC = () => {
- 
   const labelLight = '/labrador-abajo.png'
 
   const labelNight = '/labrador-abajo.png'
@@ -67,28 +66,46 @@ const Login: React.FC = () => {
 
   const [password, setPassword] = useState('')
 
+  const [loading, setLoading] = useState(false)
+
   const { enqueueSnackbar } = useSnackbar()
 
   const login = async () => {
-    
-     if(password.length < 8){
+    if (password.length < 8) {
       enqueueSnackbar('La contraseña es invalida', { variant: 'error' })
-     }else{
-     try {  
-      setUser(await userService.login(email, password))
-      history.push('/home')
-    } catch (error) {
-      console.log(error)
-       enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
+    } else {
+      try {
+        setLoading(true)
+        setUser(await userService.login(email, password))
+        history.push('/home')
+      } catch (error) {
+        console.log(error)
+        enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
+      }
+      setLoading(false)
     }
   }
-  }
+  //TODO : implementar el olvido de la contraseña. 
 
+  // const forgotPassword = async () => {
+  //   if(email!=null){
+  //     try {
+  //       setLoading(true)
+  //       setUser(await userService.forgotPassword(email))
+  //       history.push('localhost:19000/recover-password/:${email}')
+  //     } catch (error) {
+  //       console.log(error)
+  //       enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
+  //     }
+  //     setLoading(false)
+  // }
   return (
+    <div>{loading ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>}
     <Container className={classes.root} component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <img className={classes.logoLogin} src={labelLight} />
+      
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -114,19 +131,22 @@ const Login: React.FC = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
+          
           <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
-            Ingresar
+           Ingresar
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Olvido su contraseña?
               </Link>
+             
             </Grid>
           </Grid>
         </form>
       </div>
     </Container>
+    </div>
   )
 }
 

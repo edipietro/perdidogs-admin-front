@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { SERVER_URL } from '../config/Rest'
-import { User } from '../types/User'
+import { User } from '../types/model/User'
 
 class UserService {
   axiosConfig = { timeout: 3000 }
@@ -10,9 +10,8 @@ class UserService {
   }
 
   async forgotPassword(email: string): Promise<any> {
-    return (await axios.put<User>(`${SERVER_URL}/user/forgot-password`, { email}, this.axiosConfig)).data
+    return (await axios.put<User>(`${SERVER_URL}/user/forgot-password`, { email }, this.axiosConfig)).data
   }
-
 }
 
 export const userService = new UserService()

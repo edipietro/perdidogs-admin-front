@@ -1,26 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
-import { UserContext } from '../../../contexts/UserContext'
+import UserContext from '../../contexts/UserContext'
 import { useHistory } from 'react-router-dom'
-import { ThemeContextDispatch } from '../../../contexts/ThemeContext'
+import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 import Avatar from '@material-ui/core/Avatar'
-import Badge from '@material-ui/core/Badge'
-import NotificationsIcon from '@material-ui/icons/Notifications'
-import { debounce } from '@material-ui/core/utils'
 import clsx from 'clsx'
-import { of, fromEvent, animationFrameScheduler } from 'rxjs'
-import { distinctUntilChanged, filter, map, pairwise, switchMap, throttleTime } from 'rxjs/operators'
-import { useObservable } from 'rxjs-hooks'
-import { getCorrectEventName } from '@material/animation'
-import watchScroll from '../../../utils/WatchScroll'
+
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
-interface StyleProps {
-  height: number
-}
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -97,8 +85,6 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
 
   const history = useHistory()
 
-  const scrollDirection = useObservable(watchScroll, 'Up')
-
   const { user, logout } = useContext(UserContext)
 
   const { isDark } = useContext(ThemeContextDispatch)
@@ -140,8 +126,8 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
           </Badge>
         </div> */}
         <div className={classes.userContainer}>
-          <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
-          {user.username}
+          <Avatar className={classes.avatar}>{user.email[0]}</Avatar>
+          {user.email}
           <IconButton color="inherit" onClick={logout} disableRipple disableFocusRipple>
             <Icon /* className={classes.icon} */>logout</Icon>
           </IconButton>

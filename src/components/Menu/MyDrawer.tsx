@@ -1,25 +1,16 @@
 import React, { useState, useContext } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
- 
 import List from '@material-ui/core/List'
 import IconButton from '@material-ui/core/IconButton'
 import { Icon } from '@material-ui/core'
-import { UserContext } from '../contexts/UserContext'
-import { useHistory } from 'react-router-dom'
-import CollapseButton from './components/CollapseButton'
-import { ThemeContextDispatch } from '../../../../contexts/ThemeContext'
+import { UserContext } from '../../contexts/UserContext'
+import CollapseButton from './CollapseButton'
+import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import TwitterIcon from '@material-ui/icons/Twitter'
-import useGlobalStyle from '../../../../styles/globalStyles'
 import Divider from '@material-ui/core/Divider'
 import { itemList } from './Itemlist'
-import watchScroll from '../../../../utils/WatchScroll'
-import { useObservable } from 'rxjs-hooks/dist/cjs/use-observable'
-
-interface StyleProps {
-  marginTop: number
-}
 
 const appBarwidth = 260
 
@@ -92,15 +83,11 @@ interface MyDrawerProps {
 const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
   const classes = useStyles({ marginTop })
 
-  const classesGlobal = useGlobalStyle()
-
   const [open, setOpen] = useState(true)
 
   const { user, logout } = useContext(UserContext)
 
   const { isDark, setIsDark } = useContext(ThemeContextDispatch)
-
-  const scrollDirection = useObservable(watchScroll, 'Up')
 
   if (!user) return null
 
@@ -108,7 +95,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
     <div
       /*       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)} */
-      className={clsx(classes.drawer, classesGlobal.scrollbarStyles, {
+      className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
         [classes.drawerClose]: !open
         /*  [classes.drawerTop]: scrollDirection === 'Down' && 'hidden' */

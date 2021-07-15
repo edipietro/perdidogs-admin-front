@@ -1,6 +1,7 @@
-import React, { createContext, useState } from 'react'
-import { User } from '../types/User'
+import React, { createContext } from 'react'
+
 import useLocalStorage from '../hooks/useLocalStorage'
+import { User } from '../types/model/User'
 
 interface ContextProps {
   readonly user: User | null
@@ -14,12 +15,12 @@ export const UserContext = createContext<ContextProps>({
   logout: () => null
 })
 
-const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useLocalStorage('user', null)
+export const UserContextProvider: React.FC = ({ children }) => {
+  const [user, setUser] = useLocalStorage('perdidogs-user', null)
 
   const logout = () => setUser(null)
 
   return <UserContext.Provider value={{ user, setUser, logout }}>{children}</UserContext.Provider>
 }
 
-export default UserContextProvider
+export default UserContext

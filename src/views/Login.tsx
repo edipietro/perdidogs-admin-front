@@ -1,6 +1,4 @@
 import React, { useState, useContext } from 'react'
-import { UserContext } from '../../contexts/UserContext'
-import { userService } from '../../services/UserService'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Button, LinearProgress } from '@material-ui/core'
@@ -11,15 +9,16 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
-
 import { useSnackbar } from 'notistack'
+import UserContext from '../contexts/UserContext'
+import { userService } from '../services/UserService'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      /*     justifyContent: 'center', */
+      /*     background: 'linear-gradient(180deg, #BD9EF0 0%, rgba(0, 60, 255, 0.19) 100%)' */
       alignItems: 'center'
     },
     paper: {
@@ -85,7 +84,7 @@ const Login: React.FC = () => {
       setLoading(false)
     }
   }
-  //TODO : implementar el olvido de la contraseña. 
+  //TODO : implementar el olvido de la contraseña.
 
   // const forgotPassword = async () => {
   //   if(email!=null){
@@ -100,52 +99,52 @@ const Login: React.FC = () => {
   //     setLoading(false)
   // }
   return (
-    <div>{loading ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>}
-    <Container className={classes.root} component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <img className={classes.logoLogin} src={labelLight} />
-      
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="user"
-            label="Usuario"
-            name="user"
-            autoFocus
-            onChange={(event) => setUsername(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Contraseña"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
-          
-          <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
-           Ingresar
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Olvido su contraseña?
-              </Link>
-             
+    <div>
+      {loading ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>}
+      <Container className={classes.root} component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <img className={classes.logoLogin} src={labelLight} />
+
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="user"
+              label="Usuario"
+              name="user"
+              autoFocus
+              onChange={(event) => setUsername(event.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Contraseña"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
+
+            <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
+              Ingresar
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Olvido su contraseña?
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
     </div>
   )
 }

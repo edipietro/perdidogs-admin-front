@@ -6,7 +6,7 @@ class UserService {
   axiosConfig = { timeout: 3000 }
 
   async login(email: string, password: string): Promise<User> {
-    return (await axios.put<User>(`${SERVER_URL}/user/login`, { email, password }, this.axiosConfig)).data
+    return (await axios.put<User>(`http://localhost:3001/user/login`, { email, password }, this.axiosConfig)).data
   }
 
   async forgotPassword(email: string): Promise<any> {

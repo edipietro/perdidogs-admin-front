@@ -1,10 +1,12 @@
 import { Post } from './Post'
-import { Rol } from './Rol'
+import { Role } from './Role'
 
 export type User = {
   Id: number
   email: string
   password: string
-  posts: Post[]
-  rol: Rol
+  posts?: Post[]
+  role: Role
 }
+
+

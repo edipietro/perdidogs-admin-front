@@ -89,13 +89,13 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
 
   const { isDark } = useContext(ThemeContextDispatch)
 
-  const logoLight = '/liesa-logo-negro.png'
+  const logoLight = '/labrador-abajo.png'
 
-  const labelLight = '/liesa-label-negro.png'
+  const labelLight = '/labrador-abajo.png'
 
-  const logoNight = '/liesa-logo-blanco.png'
+  const logoNight = '/labrador-abajo.png'
 
-  const labelNight = '/liesa-label-blanco.png'
+  const labelNight = '/labrador-abajo.png'
 
   if (!user) return null
 

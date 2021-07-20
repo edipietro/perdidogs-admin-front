@@ -12,7 +12,6 @@ import Container from '@material-ui/core/Container'
 import { useSnackbar } from 'notistack'
 import UserContext from '../contexts/UserContext'
 import { userService } from '../services/UserService'
-import { User } from '../types/model/User'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,7 +75,7 @@ const Login: React.FC = () => {
     } else {
       try {
         setLoading(true)
-        setUser((await userService.login(email, password)) as User)
+        setUser(await userService.login(email, password))
         history.push('/home')
       } catch (error) {
         console.log(error)

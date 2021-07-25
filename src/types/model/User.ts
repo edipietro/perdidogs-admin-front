@@ -5,7 +5,7 @@ export type User = {
   Id: number
   email: string
   password: string
-  posts?: Post[]
+  posts: Post[]
   token:number
   role: Role
 }

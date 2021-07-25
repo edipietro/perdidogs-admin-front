@@ -2,9 +2,7 @@ import axios from "axios"
 import { SERVER_URL } from "../config/Rest"
 import { ActiveOverInactivePercent } from "../types/model/ActiveOverInactivePercent"
 import { Alert } from "../types/model/Alert"
-import { Filter } from "../types/model/Filter"
 import { Post } from "../types/model/Post"
-import { Stat } from "../types/model/Stat"
 import { User } from "../types/model/User"
 
 class StadisticService {

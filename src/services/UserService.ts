@@ -13,6 +13,10 @@ class UserService {
   async forgotPassword(email: string): Promise<any> {
     return (await axios.put<User>(`${SERVER_URL}/user/forgot-password`, { email }, this.axiosConfig)).data
   }
+
+ async changePasswordWithToken(email:string,token: number, newPassword:string):Promise<User> {
+  return (await axios.put<User>(`${SERVER_URL}/user/changePasswordWithToken`, { email,token,newPassword }, this.axiosConfig)).data
+ }
 }
 
 export const userService = new UserService()

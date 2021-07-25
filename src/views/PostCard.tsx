@@ -52,7 +52,7 @@ const PostCard: React.FC = (props: any) => {
       <div className={post?.description}>
         <img className={post?.description} />
         <Button fullWidth variant="contained" color="primary" className={post?.description} onClick={goBack}>
-          Ingresar
+         cancelar
         </Button>
         <Grid container>
           <Grid item xs></Grid>

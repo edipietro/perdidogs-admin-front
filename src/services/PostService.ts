@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { SERVER_URL } from '../config/Rest'
 import { Post } from '../types/model/Post'
+import { PostFilter } from '../types/model/PostFilter'
 
 class PostService {
   axiosConfig = { timeout: 3000 }
@@ -21,6 +22,10 @@ class PostService {
     return (await axios.put<Post>(`${SERVER_URL}/aceptAPost/${idPost}/${idUser}`, this.axiosConfig)).data
   }
 
+
+  async filterPosts(filter: PostFilter): Promise<Post[]>{
+    return (await axios.put<Post[]>(`${SERVER_URL}/by-admin-filter`, this.axiosConfig)).data
+  }
 
 }
 

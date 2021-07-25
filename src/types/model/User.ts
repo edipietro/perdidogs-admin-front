@@ -6,6 +6,7 @@ export type User = {
   email: string
   password: string
   posts?: Post[]
+  token:number
   role: Role
 }
 

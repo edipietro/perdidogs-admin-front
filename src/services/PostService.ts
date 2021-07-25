@@ -21,8 +21,7 @@ class PostService {
   async aceptPost(idPost: number, idUser: number): Promise<Post> {
     return (await axios.put<Post>(`${SERVER_URL}/aceptAPost/${idPost}/${idUser}`, this.axiosConfig)).data
   }
-
-
+  
   async filterPosts(filter: PostFilter): Promise<Post[]>{
     return (await axios.put<Post[]>(`${SERVER_URL}/by-admin-filter`, this.axiosConfig)).data
   }

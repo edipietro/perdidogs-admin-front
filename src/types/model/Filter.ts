@@ -1,10 +1,10 @@
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { User } from './User'
+
 export type Filter = {
-  breed: number
-  hasCollar: boolean
-  color: number
-  furLength: number
-  size: number
-  sex: string
-  dateFrom: Date
-  dateTo: Date
+  breed?: number
+  ownerEmail?: string
+  createdFrom?: MaterialUiPickersDate
+  createdTo?: MaterialUiPickersDate
+  postStatus?: number
 }

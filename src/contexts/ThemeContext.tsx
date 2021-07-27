@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider, createMuiTheme, createTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { esES } from '@material-ui/core/locale'
@@ -21,11 +21,13 @@ const ThemeContextProvider: React.FC = ({ children }) => {
    */
   const paletteStyle = () => (isDark ? themeDark : themeLight)
 
-  const primaryColor = () => '#399ead' //Celeste
+  const primaryColor = () => '#5856D6'
+
+  const primaryColorDark = () => '#8685FB'
 
   const secondaryColor = () => '#b565a2' //Rosa
 
-  const theme = createMuiTheme(
+  const theme = createTheme(
     {
       palette: {
         primary: {
@@ -58,31 +60,35 @@ const ThemeContextProvider: React.FC = ({ children }) => {
     esES
   )
 
-  const themeLight = createMuiTheme({
+  const themeLight = createTheme({
     ...theme,
     palette: {
       ...theme.palette,
+
       type: 'light',
       background: {
         default: 'rgba(250, 250, 250, 0.87)',
         paper: '#ffff'
       },
       text: {
-        primary: '#18696e', //rgba(0, 0, 0, 0.87)
+        primary: 'rgba(0, 0, 0, 0.87)',
         secondary: 'rgba(0, 0, 0, 0.54)',
         disabled: 'rgba(0, 0, 0, 0.38)'
       }
     }
   })
 
-  const themeDark = createMuiTheme({
+  const themeDark = createTheme({
     ...theme,
     palette: {
       ...theme.palette,
+      primary: {
+        main: primaryColorDark()
+      },
       type: 'dark',
 
       background: {
-        default: '#100c18',
+        default: '#1B1A1A',
         paper: '#27262a'
       },
       text: {

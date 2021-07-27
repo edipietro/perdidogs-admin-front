@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Menu from '../components/Menu/Menu'
 import { UserContext } from '../contexts/UserContext'
 import Login from '../views/Login'
-import PostCard from '../views/PostCard'
 import PostAdministration from '../views/PostAdministration'
+import PostCard from '../views/PostCard'
+/* import PostAdministration from '../views/PostAdministration' */
 
 const Routes: React.FC = () => {
   const { user } = useContext(UserContext)
@@ -14,8 +15,8 @@ const Routes: React.FC = () => {
       {user && (
         <Menu>
           <Switch>
-            <Route path="/home" component={PostAdministration} />
-            <Route path="/PostCard" component={PostCard} />
+            {/*   <Route path="/home" component={PostAdministration} /> */}
+            <Route path="/" component={PostAdministration} />
           </Switch>
         </Menu>
       )}

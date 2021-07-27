@@ -9,14 +9,15 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import { Icon } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
+import { itemListProps } from './Itemlist'
 
 interface CollapseButtonProps {
-  item: Item
+  item: itemListProps
   drawerOpen: boolean
   setDrawerOpen: (drawerOpen: boolean) => void
 }
 
-interface Item {
+/* interface Item {
   readonly label: string
   readonly logo: string
   readonly ruta: string
@@ -28,38 +29,8 @@ interface ItemChildren {
   readonly label: string
   readonly ruta: string
   readonly icon: string
-}
+} */
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper
-    },
-    nested: {
-      paddingLeft: theme.spacing(4)
-    },
-    itemLogo: {
-      width: '25px',
-      height: '25px'
-    },
-    itemButton: {
-      padding: '5px 8px',
-      minWidth: 50
-    },
-    ListItemIcon: {
-      minWidth: 45
-    },
-    label: {
-      fontSize: '1rem'
-      /* color: theme.palette.primary.main */
-    },
-    icon: {
-      color: theme.palette.primary.main
-    }
-  })
-)
 const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDrawerOpen }) => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
@@ -79,9 +50,7 @@ const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDr
   return (
     <List className={classes.root}>
       <ListItem className={classes.itemButton} button onClick={handleClick}>
-        <ListItemIcon className={classes.itemButton}>
-          <img className={classes.itemLogo} src={item.logo} />
-        </ListItemIcon>
+        <Icon className={classes.icon}>{item.icon}</Icon>
         <ListItemText disableTypography className={classes.label} primary={item.label} />
         {open && drawerOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -90,13 +59,12 @@ const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDr
           {item.children.map((children, index) => (
             <ListItem
               key={'children_' + index}
-              onClick={() => history.push(item.ruta + children.ruta)}
+              onClick={() => history.push(item.route + children.route)}
               button
               className={classes.nested}
             >
-              <ListItemIcon className={classes.ListItemIcon}>
-                <Icon className={classes.icon}>{children.icon}</Icon>
-              </ListItemIcon>
+              <Icon className={classes.icon}>{children.icon}</Icon>
+
               <ListItemText disableTypography primary={children.label} />
             </ListItem>
           ))}
@@ -107,3 +75,34 @@ const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDr
 }
 
 export default CollapseButton
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper
+    },
+    nested: {
+      paddingLeft: theme.spacing(4)
+    },
+    itemLogo: {
+      width: '25px',
+      height: '25px'
+    },
+    itemButton: {
+      minWidth: 50
+    },
+    ListItemIcon: {
+      minWidth: 45
+    },
+    label: {
+      fontSize: '1rem'
+      /* color: theme.palette.primary.main */
+    },
+    icon: {
+      color: theme.palette.primary.main,
+      marginRight: 8
+    }
+  })
+)

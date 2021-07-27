@@ -5,7 +5,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Icon from '@material-ui/core/Icon'
 import { useHistory } from 'react-router-dom'
-import { Path } from '../../types/view/Path'
+import { Path } from '../../types/componenets/Path'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,8 +14,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     icon: {
       marginRight: theme.spacing(0.5),
-      width: 20,
-      height: 20
+
+      color: 'grey',
+      fontSize: 22
     }
   })
 )

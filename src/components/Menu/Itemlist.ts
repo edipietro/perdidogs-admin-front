@@ -1,32 +1,43 @@
-export const itemList = [
+export type itemListProps = {
+  label: string
+  icon: string
+  route: string
+  open: boolean
+  children: itemListChildrenProps[]
+}
+
+export type itemListChildrenProps = {
+  label: string
+  icon: string
+  route: string
+}
+
+export const itemList: itemListProps[] = [
   {
     label: 'Publicaciones',
-    logo: '/labrador-abajo.png',
-    ruta: '/catalogo',
+    icon: 'description',
+    route: '/catalogo',
     open: false,
     children: [
       {
         label: 'Buscar Publicaciones',
-        ruta: '',
+        route: '',
         icon: 'list'
-      } 
+      }
     ]
   },
   {
     label: 'Estadisticas',
-    logo: 'labrador-abajo.png',
-    ruta: '/mercadolibre',
+    icon: 'analytics',
+    route: '/mercadolibre',
     open: false,
-    children: [ 
-      
-    ]
+    children: []
   },
   {
     label: 'Registrar usuario',
-    logo: 'labrador-abajo.png',
-    ruta: '/tiendaNube',
+    icon: 'manage_accounts',
+    route: '/tiendaNube',
     open: false,
-    children: [ 
-    ]
-  } 
+    children: []
+  }
 ]

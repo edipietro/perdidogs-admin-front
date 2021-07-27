@@ -12,48 +12,11 @@ import Container from '@material-ui/core/Container'
 import { useSnackbar } from 'notistack'
 import UserContext from '../contexts/UserContext'
 import { userService } from '../services/UserService'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      /*     background: 'linear-gradient(180deg, #BD9EF0 0%, rgba(0, 60, 255, 0.19) 100%)' */
-      alignItems: 'center'
-    },
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1)
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2)
-    },
-    logo: {
-      width: '9rem',
-      height: '9rem'
-    },
-    logoLabel: {
-      width: '150px',
-      height: '18px',
-      marginRight: '0.5rem'
-    },
-    logoLogin: {
-      width: '60%'
-    }
-  })
-)
+import showError from '../utils/Erros'
+import LoadingLinearProgress from '../components/LoadingLinearProgress'
 
 const Login: React.FC = () => {
   const labelLight = '/labrador-abajo.png'
-
-  const labelNight = '/labrador-abajo.png'
 
   const classes = useStyles()
 
@@ -65,23 +28,23 @@ const Login: React.FC = () => {
 
   const [password, setPassword] = useState('')
 
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
   const login = async () => {
     if (password.length < 8) {
-      enqueueSnackbar('La contraseña es invalida', { variant: 'error' })
+      enqueueSnackbar('El email o la contraseña no son validos', { variant: 'error' })
     } else {
       try {
-        setLoading(true)
+        setIsLoading(true)
         setUser(await userService.login(email, password))
         history.push('/home')
       } catch (error) {
         console.log(error)
-        enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
+        enqueueSnackbar(showError(error), { variant: 'error' })
       }
-      setLoading(false)
+      setIsLoading(false)
     }
   }
   //TODO : implementar el olvido de la contraseña.
@@ -100,7 +63,7 @@ const Login: React.FC = () => {
   // }
   return (
     <div>
-      {loading ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>}
+      <LoadingLinearProgress isLoading={isLoading} />
       <Container className={classes.root} component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -150,3 +113,40 @@ const Login: React.FC = () => {
 }
 
 export default Login
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      /*     background: 'linear-gradient(180deg, #BD9EF0 0%, rgba(0, 60, 255, 0.19) 100%)' */
+      alignItems: 'center'
+    },
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1)
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2)
+    },
+    logo: {
+      width: '9rem',
+      height: '9rem'
+    },
+    logoLabel: {
+      width: '150px',
+      height: '18px',
+      marginRight: '0.5rem'
+    },
+    logoLogin: {
+      width: '60%'
+    }
+  })
+)

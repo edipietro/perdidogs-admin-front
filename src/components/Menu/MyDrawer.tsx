@@ -14,10 +14,87 @@ import { itemList } from './Itemlist'
 
 const appBarwidth = 260
 
+interface MyDrawerProps {
+  marginTop: number
+}
+
+const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
+  const classes = useStyles({ marginTop })
+
+  const [open, setOpen] = useState(true)
+
+  const { user } = useContext(UserContext)
+
+  const { isDark, setIsDark } = useContext(ThemeContextDispatch)
+
+  if (!user) return null
+
+  return (
+    <div
+      /*       onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)} */
+      className={clsx(classes.drawer, {
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open
+        /*  [classes.drawerTop]: scrollDirection === 'Down' && 'hidden' */
+      })}
+    >
+      <List className={classes.itemList}>
+        {itemList.map((item, index) => (
+          <div key={'item_' + index}>
+            <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
+            <Divider />
+          </div>
+        ))}
+      </List>
+
+      <div>
+        <Divider variant="middle" />
+        <div className={classes.drawerBottonContainer}>
+          <div className={classes.colorModeContainer}>
+            {(open || isDark) && (
+              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                <Icon classes={{ colorDisabled: classes.iconDisabled }} color={isDark ? 'disabled' : 'primary'}>
+                  wb_sunny
+                </Icon>
+              </IconButton>
+            )}
+            {open && <a>/</a>}
+            {(open || !isDark) && (
+              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(true)}>
+                <Icon classes={{ colorDisabled: classes.iconDisabled }} color={isDark ? 'primary' : 'disabled'}>
+                  nightlight_round
+                </Icon>
+              </IconButton>
+            )}
+          </div>
+          {open && (
+            <div className={classes.socialContainer}>
+              <IconButton
+                disableRipple
+                disableFocusRipple
+                color="primary"
+                onClick={() => window.open('https://gitlab.com/liesa/middleware/webapp')}
+              >
+                <GitHubIcon />
+              </IconButton>
+              {/*         <IconButton color="primary" disableRipple disableFocusRipple>
+                <TwitterIcon />
+              </IconButton> */}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default MyDrawer
+
 const useStyles = makeStyles((theme) => ({
   drawer: {
     /* marginTop: (props: StyleProps) => props.marginTop, */
-    paddingTop: 50,
+    paddingTop: 75,
     zIndex: 2,
     width: appBarwidth,
     flexShrink: 0,
@@ -75,79 +152,3 @@ const useStyles = makeStyles((theme) => ({
     gap: '16px'
   }
 }))
-
-interface MyDrawerProps {
-  marginTop: number
-}
-
-const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
-  const classes = useStyles({ marginTop })
-
-  const [open, setOpen] = useState(true)
-
-  const { user, logout } = useContext(UserContext)
-
-  const { isDark, setIsDark } = useContext(ThemeContextDispatch)
-
-  if (!user) return null
-
-  return (
-    <div
-      /*       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)} */
-      className={clsx(classes.drawer, {
-        [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open
-        /*  [classes.drawerTop]: scrollDirection === 'Down' && 'hidden' */
-      })}
-    >
-      <List className={classes.itemList}>
-        {itemList.map((item, index) => (
-          <div key={'item_' + index}>
-            <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
-            <Divider />
-          </div>
-        ))}
-      </List>
-
-      <div>
-        <Divider variant="middle" />
-        <div className={classes.drawerBottonContainer}>
-          <div className={classes.colorModeContainer}>
-            {(open || isDark) && (
-              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
-                <Icon classes={{ colorDisabled: classes.iconDisabled }} color={isDark ? 'disabled' : 'primary'}>
-                  wb_sunny
-                </Icon>
-              </IconButton>
-            )}
-            {open && <a>/</a>}
-            {(open || !isDark) && (
-              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(true)}>
-                <Icon classes={{ colorDisabled: classes.iconDisabled }} color={isDark ? 'primary' : 'disabled'}>
-                  nightlight_round
-                </Icon>
-              </IconButton>
-            )}
-          </div>
-          {open && (
-            <div className={classes.socialContainer}>
-              <IconButton
-                disableRipple
-                disableFocusRipple
-                onClick={() => window.open('https://gitlab.com/liesa/middleware/webapp')}
-              >
-                <GitHubIcon />
-              </IconButton>
-              <IconButton color="primary" disableRipple disableFocusRipple>
-                <TwitterIcon />
-              </IconButton>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default MyDrawer

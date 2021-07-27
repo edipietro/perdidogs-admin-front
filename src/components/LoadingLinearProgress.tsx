@@ -6,7 +6,7 @@ interface LoadingLinearProgressProps {
 }
 
 const LoadingLinearProgress: React.FC<LoadingLinearProgressProps> = ({ isLoading }) => {
-  return isLoading ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>
+  return isLoading ? <LinearProgress style={{ width: '100%' }} /> : <div style={{ marginTop: 4 }}></div>
 }
 
 export default LoadingLinearProgress

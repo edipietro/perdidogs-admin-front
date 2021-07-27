@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { UserContext } from '../contexts/UserContext'
 import Divider from '@material-ui/core/Divider'
 import MyBreadcrumbs from './MyStyledComponents/MyBreadcrumbs'
-import { Path } from '../types/view/Path'
+import { Path } from '../types/componenets/Path'
 
-const appBarHeight = 50
+const appBarHeight = 75
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface RootProps {
+interface RootProps extends React.HTMLAttributes<HTMLDivElement> {
   tittle: string
   paths?: Path[]
 }
@@ -37,7 +37,7 @@ interface RootProps {
 const Root: React.FC<RootProps> = (props) => {
   const classes = useStyles()
 
-  const { tittle, paths, children } = props
+  const { tittle, paths, children, ...otherprops } = props
 
   const { user } = useContext(UserContext)
 
@@ -47,9 +47,9 @@ const Root: React.FC<RootProps> = (props) => {
     <div className={classes.root}>
       <MyBreadcrumbs paths={paths} />
       <Divider />
-      <div style={{ alignSelf: 'center' }}>
+      <div>
         {/*   <div className={classes.tittle}> {tittle}</div> */}
-        <div>{children}</div>
+        <div {...otherprops}>{children}</div>
       </div>
     </div>
   )

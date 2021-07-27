@@ -17,15 +17,18 @@ class PostService {
   async rejectPost(idPost: number, idUser: number): Promise<Post> {
     return (await axios.put<Post>(`${SERVER_URL}/rejectAPost/${idPost}/${idUser}`, this.axiosConfig)).data
   }
- 
+
   async aceptPost(idPost: number, idUser: number): Promise<Post> {
     return (await axios.put<Post>(`${SERVER_URL}/aceptAPost/${idPost}/${idUser}`, this.axiosConfig)).data
   }
-  
-  async filterPosts(filter: PostFilter): Promise<Post[]>{
-    return (await axios.put<Post[]>(`${SERVER_URL}/by-admin-filter`, this.axiosConfig)).data
+
+  async filterPosts(filter: PostFilter): Promise<Post[]> {
+    return (await axios.put<Post[]>(`${SERVER_URL}/by-admin-filter`, { filter }, this.axiosConfig)).data
   }
 
+  async getByFilter(): Promise<Post[]> {
+    return (await axios.get<Post[]>(`${SERVER_URL}/post/by-admin-filter`, this.axiosConfig)).data
+  }
 }
 
 export const postService = new PostService()

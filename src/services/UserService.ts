@@ -7,7 +7,7 @@ class UserService {
  
 
   async login(email: string, password: string): Promise<User> {
-    return (await axios.put<User>(`${SERVER_URL}/user/login`, { email, password }, this.axiosConfig)).data
+    return (await axios.put<User>(`${SERVER_URL}/admin/login`, { email, password }, this.axiosConfig)).data
   }
 
   async forgotPassword(email: string): Promise<any> {

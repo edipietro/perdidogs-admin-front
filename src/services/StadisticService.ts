@@ -22,13 +22,13 @@ class StadisticService {
   }
 
   async porcentajePostActivosSobreInactivos(
-    usersActive: User[],
-    usersInactive: User[]
+    postActive: Post[],
+    postInactive: Post[]
   ): Promise<ActiveOverInactivePercent> {
     return (
       await axios.put<ActiveOverInactivePercent>(
         `${SERVER_URL_ADMIN}/porcentajeUsuariosActivosSobreInactivos`,
-        { usersActive, usersInactive },
+        { postActive, postInactive },
         this.axiosConfig
       )
     ).data

@@ -10,11 +10,12 @@ import clsx from 'clsx'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
 
-interface MyAppBarProps {
+interface NavBarProps {
   height: number
+  handleDrawer: () => void
 }
 
-const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
+const NavBar: React.FC<NavBarProps> = ({ height, handleDrawer }) => {
   const classes = useStyles({ height })
 
   const history = useHistory()
@@ -37,9 +38,9 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
   return (
     <nav className={clsx(classes.navbar)}>
       <div className={classes.navbarLeft}>
-        {/* <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
-              <Icon className={classes.icon}>menu_open</Icon>
-            </IconButton> */}
+        {/*         <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
+          <Icon className={classes.icon}>menu_open</Icon>
+        </IconButton> */}
         <Button className={classes.homeButton} size="large" onClick={() => history.push('/home')}>
           <div className={classes.logoContainer}>
             <img className={classes.logo} src={logo} />
@@ -54,7 +55,9 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
           </Badge>
         </div> */}
         <div className={classes.userContainer}>
-          <Avatar className={classes.avatar}>{user.firstName[0] + user.lastName[0]}</Avatar>
+          <Avatar src={user.avatar} className={classes.avatar}>
+            {user.firstName[0] + user.lastName[0]}
+          </Avatar>
           <div className={classes.userName}>
             {user.firstName} {user.lastName}
           </div>
@@ -67,7 +70,7 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
   )
 }
 
-export default MyAppBar
+export default NavBar
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -107,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Love Ya Like A Sister',
     fontSize: 32,
     fontWeight: 'bold',
-    color: theme.palette.text.primary
+    color: theme.palette.text.secondary
   },
   navbarLeft: {
     display: 'flex',
@@ -137,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
   userName: {
     fontSize: '18px',
     color: theme.palette.text.primary,
-    fontWeight: 'bold'
+    fontWeight: 600
   },
   homeButton: {
     textTransform: 'none'

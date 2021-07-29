@@ -1,67 +1,50 @@
 import axios from 'axios'
 import { SERVER_URL_ADMIN } from '../config/Rest'
 import { ActiveOverInactivePercent } from '../types/model/ActiveOverInactivePercent'
-import { Alert } from '../types/model/Alert'
-import { Post } from '../types/model/Post'
-import { User } from '../types/model/User'
+import { Stat } from '../types/model/Stat'
 
 class StadisticService {
   axiosConfig = { timeout: 3000 }
 
-  async porcentajeUsuariosActivosSobreInactivos(
-    usersActive: User[],
-    usersInactive: User[]
-  ): Promise<ActiveOverInactivePercent> {
+  async porcentajeUsuariosActivosSobreInactivos(): Promise<ActiveOverInactivePercent> {
     return (
       await axios.put<ActiveOverInactivePercent>(
-        `${SERVER_URL_ADMIN}/porcentajeUsuariosActivosSobreInactivos`,
-        { usersActive, usersInactive },
+        `${SERVER_URL_ADMIN}/stats/porcentajeUsuariosActivosSobreInactivos`,
+        {},
         this.axiosConfig
       )
     ).data
   }
 
-  async porcentajePostActivosSobreInactivos(
-    postActive: Post[],
-    postInactive: Post[]
-  ): Promise<ActiveOverInactivePercent> {
+  async porcentajePostActivosSobreInactivos(): Promise<ActiveOverInactivePercent> {
     return (
       await axios.put<ActiveOverInactivePercent>(
-        `${SERVER_URL_ADMIN}/porcentajeUsuariosActivosSobreInactivos`,
-        { postActive, postInactive },
+        `${SERVER_URL_ADMIN}/stats/porcentajeUsuariosActivosSobreInactivos`,
+        {},
         this.axiosConfig
       )
     ).data
   }
 
-  async calculateLostBreeds(postsActive: Post[], postsInactive: Post[]): Promise<ActiveOverInactivePercent> {
+  async calculateLostBreeds(): Promise<Stat[]> {
+    return (await axios.put<Stat[]>(`${SERVER_URL_ADMIN}/stats/calculateLostBreeds`, {}, this.axiosConfig)).data
+  }
+
+  async porcentajeDeRazasPerdidas(): Promise<ActiveOverInactivePercent> {
     return (
       await axios.put<ActiveOverInactivePercent>(
-        `${SERVER_URL_ADMIN}/calculateLostBreeds`,
-        { postsActive, postsInactive },
+        `${SERVER_URL_ADMIN}/stats/porcentajeDeRazasPerdidas`,
+        {},
         this.axiosConfig
       )
     ).data
   }
 
-  async porcentajeDeRazasPerdidas(postsActive: Post[], postsInactive: Post[]): Promise<ActiveOverInactivePercent> {
+  async porcentajeDeAlertasActivasSobreInactivas(): Promise<ActiveOverInactivePercent> {
     return (
       await axios.put<ActiveOverInactivePercent>(
-        `${SERVER_URL_ADMIN}/porcentajeDeRazasPerdidas`,
-        { postsActive, postsInactive },
-        this.axiosConfig
-      )
-    ).data
-  }
-
-  async porcentajeDeAlertasActivasSobreInactivas(
-    activeAlert: Alert[],
-    inactiveAlert: Alert[]
-  ): Promise<ActiveOverInactivePercent> {
-    return (
-      await axios.put<ActiveOverInactivePercent>(
-        `${SERVER_URL_ADMIN}/porcentajeDeAlertasActivasSobreInactivas`,
-        { activeAlert, inactiveAlert },
+        `${SERVER_URL_ADMIN}/stats/porcentajeDeAlertasActivasSobreInactivas`,
+        {},
         this.axiosConfig
       )
     ).data

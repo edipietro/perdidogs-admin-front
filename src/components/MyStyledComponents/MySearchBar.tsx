@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
       /*  alignItems: 'center', */
       /*  borderStyle: 'solid', */
       /*   alignSelf: 'center', */
+      backgroundColor: theme.palette.background.default,
       borderColor: theme.palette.primary.main,
       borderWidth: 1,
       boxShadow: 'none',

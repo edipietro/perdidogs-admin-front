@@ -7,20 +7,6 @@ import Icon from '@material-ui/core/Icon'
 import { useHistory } from 'react-router-dom'
 import { Path } from '../../types/componenets/Path'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    link: {
-      display: 'flex'
-    },
-    icon: {
-      marginRight: theme.spacing(0.5),
-
-      color: 'grey',
-      fontSize: 22
-    }
-  })
-)
-
 interface MyBreadcrumbsProps {
   paths?: Path[]
 }
@@ -60,3 +46,18 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ paths }) => {
 }
 
 export default MyBreadcrumbs
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    link: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    icon: {
+      marginRight: theme.spacing(1),
+
+      color: 'grey',
+      fontSize: 20
+    }
+  })
+)

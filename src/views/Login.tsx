@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { Button, LinearProgress } from '@material-ui/core'
+import { Button, LinearProgress, useTheme } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
+import clsx from 'clsx'
+
 import { useSnackbar } from 'notistack'
 import UserContext from '../contexts/UserContext'
 import { userService } from '../services/UserService'
@@ -16,7 +17,7 @@ import showError from '../utils/Erros'
 import LoadingLinearProgress from '../components/LoadingLinearProgress'
 
 const Login: React.FC = () => {
-  const labelLight = '/labrador-abajo.png'
+  const labelLight = '/labrador.png'
 
   const classes = useStyles()
 
@@ -32,6 +33,8 @@ const Login: React.FC = () => {
 
   const { enqueueSnackbar } = useSnackbar()
 
+  const theme = useTheme()
+
   const login = async () => {
     if (password.length < 8) {
       enqueueSnackbar('El email o la contraseña no son validos', { variant: 'error' })
@@ -39,7 +42,7 @@ const Login: React.FC = () => {
       try {
         setIsLoading(true)
         setUser(await userService.login(email, password))
-        history.push('/home')
+        history.push('/')
       } catch (error) {
         console.log(error)
         enqueueSnackbar(showError(error), { variant: 'error' })
@@ -47,31 +50,34 @@ const Login: React.FC = () => {
       setIsLoading(false)
     }
   }
-  //TODO : implementar el olvido de la contraseña.
 
-  // const forgotPassword = async () => {
-  //   if(email!=null){
-  //     try {
-  //       setLoading(true)
-  //       setUser(await userService.forgotPassword(email))
-  //       history.push('localhost:19000/recover-password/:${email}')
-  //     } catch (error) {
-  //       console.log(error)
-  //       enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
-  //     }
-  //     setLoading(false)
-  // }
   return (
-    <div>
-      <LoadingLinearProgress isLoading={isLoading} />
-      <Container className={classes.root} component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <img className={classes.logoLogin} src={labelLight} />
+    <div className={classes.root}>
+      <div className={classes.loadingContainer}>
+        <LoadingLinearProgress isLoading={isLoading} />
+        {/*   <LoadingLinearProgress isLoading={isLoading} /> */}
+      </div>
 
+      <div className={classes.midContent}>
+        <img className={classes.logoLogin} src={labelLight} />
+        <div className={classes.loginContainer}>
           <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
+            <div>
+              <input
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="Email"
+                className={clsx(classes.input, classes.inputEmail)}
+              />
+
+              <input
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Contraseña"
+                type="password"
+                className={classes.input}
+              />
+            </div>
+            {/*       <TextField
+              variant="filled"
               margin="normal"
               required
               fullWidth
@@ -82,7 +88,7 @@ const Login: React.FC = () => {
               onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
-              variant="outlined"
+              variant="filled"
               margin="normal"
               required
               fullWidth
@@ -92,7 +98,7 @@ const Login: React.FC = () => {
               id="password"
               autoComplete="current-password"
               onChange={(event) => setPassword(event.target.value)}
-            />
+            /> */}
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
 
             <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
@@ -107,7 +113,7 @@ const Login: React.FC = () => {
             </Grid>
           </form>
         </div>
-      </Container>
+      </div>
     </div>
   )
 }
@@ -119,34 +125,47 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-      /*     background: 'linear-gradient(180deg, #BD9EF0 0%, rgba(0, 60, 255, 0.19) 100%)' */
-      alignItems: 'center'
+      background: 'linear-gradient(180deg, #FFE5B2 1.04%, #EFB865 100%)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh'
     },
-    paper: {
-      marginTop: theme.spacing(8),
+    loadingContainer: {
+      position: 'absolute',
+      top: 0,
+      width: '100%'
+    },
+    midContent: {
       display: 'flex',
       flexDirection: 'column',
+      alignItems: 'center',
       justifyContent: 'center',
-      alignItems: 'center'
+
+      width: '25vw'
     },
+    loginContainer: {},
     form: {
       width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1)
     },
     submit: {
-      margin: theme.spacing(3, 0, 2)
+      margin: theme.spacing(0, 0, 2)
     },
-    logo: {
-      width: '9rem',
-      height: '9rem'
-    },
-    logoLabel: {
-      width: '150px',
-      height: '18px',
-      marginRight: '0.5rem'
-    },
+
     logoLogin: {
       width: '60%'
+    },
+    input: {
+      width: '100%',
+      filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+      border: '1px solid #000000',
+      borderRadius: 8,
+      padding: 16,
+      color: 'grey'
+      /*  marginBottom: 16 */
+    },
+    inputEmail: {
+      marginBottom: 16
     }
   })
 )

@@ -6,5 +6,5 @@ export type Filter = {
   ownerEmail?: string
   createdFrom?: MaterialUiPickersDate
   createdTo?: MaterialUiPickersDate
-  postStatus?: number
+  postStatus?: number[]
 }

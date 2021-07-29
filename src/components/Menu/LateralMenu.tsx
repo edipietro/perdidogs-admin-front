@@ -10,19 +10,21 @@ import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import Divider from '@material-ui/core/Divider'
-import { itemList } from './Itemlist'
+import { MenuitemList } from './MenuItemlist'
 
 const appBarwidth = 260
 
-interface MyDrawerProps {
+interface LateralMenuProps {
   marginTop: number
+  open: boolean
+  setOpen: (state: boolean) => void
 }
 
-const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
+const LateralMenu: React.FC<LateralMenuProps> = ({ marginTop, open, setOpen }) => {
   const classes = useStyles({ marginTop })
 
-  const [open, setOpen] = useState(true)
-
+  /*  const [open, setOpen] = useState(true)
+   */
   const { user } = useContext(UserContext)
 
   const { isDark, setIsDark } = useContext(ThemeContextDispatch)
@@ -40,7 +42,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
       })}
     >
       <List className={classes.itemList}>
-        {itemList.map((item, index) => (
+        {MenuitemList.map((item, index) => (
           <div key={'item_' + index}>
             <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
             <Divider />
@@ -74,7 +76,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
                 disableRipple
                 disableFocusRipple
                 color="primary"
-                onClick={() => window.open('https://gitlab.com/liesa/middleware/webapp')}
+                onClick={() => window.open('https://github.com/IvanLisas/perdidogs-frontend')}
               >
                 <GitHubIcon />
               </IconButton>
@@ -89,7 +91,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
   )
 }
 
-export default MyDrawer
+export default LateralMenu
 
 const useStyles = makeStyles((theme) => ({
   drawer: {

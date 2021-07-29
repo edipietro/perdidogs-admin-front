@@ -9,31 +9,17 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import { Icon } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
-import { itemListProps } from './Itemlist'
+import { MenuitemListProps } from './MenuItemlist'
 
 interface CollapseButtonProps {
-  item: itemListProps
+  item: MenuitemListProps
   drawerOpen: boolean
   setDrawerOpen: (drawerOpen: boolean) => void
 }
 
-/* interface Item {
-  readonly label: string
-  readonly logo: string
-  readonly ruta: string
-  readonly children: ItemChildren[]
-  readonly open: boolean
-}
-
-interface ItemChildren {
-  readonly label: string
-  readonly ruta: string
-  readonly icon: string
-} */
-
 const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDrawerOpen }) => {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(item.open)
 
   const history = useHistory()
 
@@ -64,8 +50,8 @@ const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDr
               className={classes.nested}
             >
               <Icon className={classes.icon}>{children.icon}</Icon>
-
-              <ListItemText disableTypography primary={children.label} />
+              {/*  <Icon className={classes.icon}>chevron_right</Icon>*/}
+              <ListItemText disableTypography className={classes.childrenLabel} primary={children.label} />
             </ListItem>
           ))}
         </List>
@@ -103,6 +89,9 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       color: theme.palette.primary.main,
       marginRight: 8
+    },
+    childrenLabel: {
+      fontSize: '1rem'
     }
   })
 )

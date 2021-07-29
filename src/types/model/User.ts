@@ -1,4 +1,3 @@
-import { Post } from './Post'
 import { Role } from './Role'
 
 export type User = {
@@ -8,4 +7,5 @@ export type User = {
   role: Role
   firstName: string
   lastName: string
+  avatar: string
 }

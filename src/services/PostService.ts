@@ -23,9 +23,9 @@ class PostService {
     return (await axios.put<Post>(`${SERVER_URL_ADMIN}/aceptAPost/${idPost}/${idUser}`, this.axiosConfig)).data
   }
 
-  async filterPosts(filter: PostFilter): Promise<Post[]> {
+  /*   async filterPosts(filter: PostFilter): Promise<Post[]> {
     return (await axios.put<Post[]>(`${SERVER_URL_ADMIN}/by-admin-filter`, { filter }, this.axiosConfig)).data
-  }
+  } */
 
   async getPostsByFilter(filter: Filter): Promise<Post[]> {
     return (await axios.put<Post[]>(`${SERVER_URL_ADMIN}/filterPosts`, filter, this.axiosConfig)).data

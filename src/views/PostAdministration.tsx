@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { useSnackbar } from 'notistack'
@@ -12,16 +12,32 @@ import { postService } from '../services/PostService'
 import { Post } from '../types/model/Post'
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import {
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  IconButton,
+  Icon
+} from '@material-ui/core'
 import { Color } from '../types/model/Color'
 import { Size } from '../types/model/Size'
 import dropDownService from '../services/DropDownService'
 import { Breed } from '../types/model/Breed'
 import { FurLength } from '../types/model/FurLength'
 import LoadingLinearProgress from '../components/LoadingLinearProgress'
+import { Galleria } from 'primereact/galleria'
+import { Picture } from '../types/model/Picture'
+import UserContext from '../contexts/UserContext'
+import Chip from '../components/Chip'
+import MyBox from '../components/MyStyledComponents/MyBox'
 
 const PostAdministration: React.FC = () => {
   const classes = useStyles()
+
+  const { user } = useContext(UserContext)
 
   const [colors, setColors] = useState<Color[]>([])
   const [breeds, setBreeds] = useState<Breed[]>([])
@@ -32,11 +48,34 @@ const PostAdministration: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
-  const [filter, setFilter] = useState<Filter>({})
+  const [filter, setFilter] = useState<Filter>({ postStatus: [1, 2, 3] })
 
   const { enqueueSnackbar } = useSnackbar()
 
   const [posts, setPosts] = useState<Post[]>([])
+
+  const itemTemplate = (item: Picture) => {
+    return <img src={item.url} style={{ width: '100%', display: 'block' }} />
+  }
+
+  const thumbnailTemplate = (item: Picture) => {
+    return <img src={item.url} style={{ display: 'block' }} />
+  }
+
+  const responsiveOptions = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ]
 
   const handleSearch = async () => {
     try {
@@ -45,7 +84,7 @@ const PostAdministration: React.FC = () => {
       setPosts(await postService.getPostsByFilter(filter))
       console.log(await postService.getPostsByFilter(filter))
     } catch (error) {
-      enqueueSnackbar(showError(error.message), { variant: 'error' })
+      enqueueSnackbar(showError(error), { variant: 'error' })
     } finally {
       setIsLoading(false)
     }
@@ -56,6 +95,15 @@ const PostAdministration: React.FC = () => {
       ...prevState,
       breed: event.target.value == 0 ? undefined : (event.target.value as number)
     }))
+  }
+
+  const caption = (item) => {
+    return (
+      <React.Fragment>
+        <h4 className="p-mb-2">{'Hola'}</h4>
+        <p>{'Hola'}</p>
+      </React.Fragment>
+    )
   }
 
   useEffect(() => {
@@ -76,25 +124,61 @@ const PostAdministration: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    console.log('render')
     const fetchPosts = async () => await handleSearch()
     fetchPosts()
   }, [filter])
 
   const paths = [
-    { name: 'Publicaciones', icon: 'home', url: '/' } as Path
-    /*  { name: 'Producto', icon: 'inventory_2', url: '/product' } as Path */
+    { name: 'Publicaciones', icon: 'home' } as Path,
+    { name: 'Administrar', icon: 'settings', url: '/product' } as Path
   ]
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (filter.postStatus) {
+      if (event.target.checked)
+        filter.postStatus?.includes(+event.target.name) ? null : filter.postStatus?.push(+event.target.name)
+      else filter.postStatus = filter.postStatus?.filter((status) => status !== +event.target.name)
+      setFilter((prevState) => ({ ...prevState }))
+    }
+  }
+
+  const handleAceptPost = async (post: Post) => {
+    try {
+      setIsLoading(true)
+      if (user) await postService.aceptPost(post.Id, user.Id)
+      setFilter((prevState) => ({ ...prevState }))
+      enqueueSnackbar('La publicacion ha pasado a estar activa', { variant: 'success' })
+    } catch (error) {
+      enqueueSnackbar(showError(error), { variant: 'error' })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleCancelPost = async (post: Post) => {
+    try {
+      setIsLoading(true)
+      if (user) await postService.rejectPost(post.Id, user.Id)
+      setFilter((prevState) => ({ ...prevState }))
+      enqueueSnackbar('La publcacion ha pasado a estar inactiva', { variant: 'success' })
+    } catch (error) {
+      enqueueSnackbar(showError(error), { variant: 'error' })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <MuiPickersUtilsProvider locale={esLocale} utils={DateFnsUtils}>
-      <Root className={classes.root} paths={paths} tittle="Producto">
+      <Root className={classes.root} paths={paths}>
         <LoadingLinearProgress isLoading={isLoading} />
-        <div className={classes.toolBar}>
+        <MyBox className={classes.toolBar}>
           {console.log(filter)}
-          <div className={classes.checkboxesContainer}>
+          <div className={classes.searchBarContainer}>
             <div className={classes.checkboxesLabel}>Correo del autor</div>
             <MySearchBar
-              className={classes.searchBar}
+              /*  className={classes.searchBar} */
               onClick={handleSearch}
               search={filter.ownerEmail}
               setSearch={(search) => setFilter((prevState) => ({ ...prevState, ownerEmail: search }))}
@@ -105,9 +189,30 @@ const PostAdministration: React.FC = () => {
           <div className={classes.checkboxesContainer}>
             <div className={classes.checkboxesLabel}>Estado</div>
             <div className={classes.checkboxes}>
-              <FormControlLabel control={<Checkbox name="Activos" color="primary" />} label="Activos" />
-              <FormControlLabel control={<Checkbox name="Inactivos" color="primary" />} label="Inactivos" />
-              <FormControlLabel control={<Checkbox name="Eliminados" color="primary" />} label="Eliminados" />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={filter.postStatus?.includes(1)} onChange={handleChange} name="1" color="primary" />
+                }
+                label="Activos"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={filter.postStatus?.includes(2)} onChange={handleChange} name="2" color="primary" />
+                }
+                label="Inactivos"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={filter.postStatus?.includes(4)} onChange={handleChange} name="4" color="primary" />
+                }
+                label="Encontados"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={filter.postStatus?.includes(3)} onChange={handleChange} name="3" color="primary" />
+                }
+                label="Pendientes"
+              />
             </div>
           </div>
           <FormControl className={classes.breedContainer}>
@@ -159,25 +264,43 @@ const PostAdministration: React.FC = () => {
               }}
             />
           </div>
-        </div>
-        <div className={classes.postsGrid}>
+        </MyBox>
+        <MyBox className={classes.postsGrid}>
           {posts.map((post, index) => (
+            /*        <Galleria
+              value={post.pictures}
+              responsiveOptions={responsiveOptions}
+              numVisible={1}
+              item={itemTemplate}
+              thumbnail={thumbnailTemplate}
+              caption={caption}
+              style={{ maxWidth: '640px' }}
+            /> */
             <div
               style={{
                 backgroundSize: 'cover',
                 backgroundRepeat: ' no-repeat',
-                /*  backgroundPosition: 'center center', */
                 backgroundImage: `linear-gradient(transparent, rgb(0 0 0 / 45%), rgb(0 0 4 / 68%)),url(${post.pictures[0].url})`,
-                /*   background: 'linear-gradient(0deg, rgb(0 0 0 / 16%) 0%, rgb(255 0 0 / 0%) 100%)', */
                 width: 290,
                 height: 250,
                 borderRadius: 12
               }}
             >
               {post.pet.breed.description}
+              {post.postStatus.Id !== 2 && (
+                <IconButton color="secondary" onClick={() => handleCancelPost(post)} disableRipple disableFocusRipple>
+                  <Icon className={classes.icon}>block</Icon>
+                </IconButton>
+              )}
+              {post.postStatus.Id !== 1 && (
+                <IconButton color="primary" onClick={() => handleAceptPost(post)} disableRipple disableFocusRipple>
+                  <Icon className={classes.icon}>done</Icon>
+                </IconButton>
+              )}
+              <Chip status={post.postStatus}> </Chip>
             </div>
           ))}
-        </div>
+        </MyBox>
       </Root>
     </MuiPickersUtilsProvider>
   )
@@ -190,23 +313,24 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-      padding: '0px 16px',
+      /* padding: '0px 16px', */
       /*   alignItems: 'center', */
       width: '100%'
-      /*  gap: 16 */
+      /* gap: 32 */
       /*   alignItems: 'center' */
     },
     toolBar: {
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      /*   justifyContent: 'space-between', */
       width: '100%',
       gap: 16,
       alignItems: 'flex-end'
     },
     datePickersContainer: {
       display: 'flex',
-      gap: 16
+      gap: 16,
+      width: '320px'
     },
     checkboxes: {
       display: 'flex',
@@ -230,12 +354,14 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 400,
       color: theme.palette.text.secondary
     },
-    searchBar: {
-      /*       display: 'flex',
-      flexDirection: 'column' */
+    searchBarContainer: {
+      display: 'flex',
+      flexDirection: 'column'
+      /*  width: '100%' */
     },
     breedContainer: {
-      marginBottom: 8
+      marginBottom: 8,
+      width: 160
     },
     postsGrid: {
       display: 'grid',
@@ -247,6 +373,9 @@ const useStyles = makeStyles((theme: Theme) =>
       /*  gridAutoFlow: 'column', */
       gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))'
       /*     flexWrap: 'wrap' */
+    },
+    icon: {
+      color: theme.palette.primary.main
     }
   })
 )

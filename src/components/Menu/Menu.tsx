@@ -1,12 +1,37 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { withRouter } from 'react-router-dom'
 import { UserContext } from '../../contexts/UserContext'
-import MyAppBar from './MyAppBar'
-import MyDrawer from './MyDrawer'
+import NavBar from './NavBar'
+import LateralMenu from './LateralMenu'
 
 const appBarHeight = 50
+
+const Menu: React.FC = ({ children }) => {
+  const classes = useStyles()
+
+  const appBarHeight = 65
+
+  const { user } = useContext(UserContext)
+
+  const [open, setOpen] = useState(true)
+
+  const handleDrawer = () => setOpen(!open)
+
+  if (!user) return null
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <NavBar handleDrawer={handleDrawer} height={appBarHeight} />
+      <div className={classes.drawerAndContentContainer}>
+        <LateralMenu open={open} setOpen={setOpen} marginTop={appBarHeight} />
+        {children}
+      </div>
+    </div>
+  )
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,26 +57,5 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: 'row wrap'
   }
 }))
-
-const Menu: React.FC = ({ children }) => {
-  const classes = useStyles()
-
-  const appBarHeight = 65
-
-  const { user } = useContext(UserContext)
-
-  if (!user) return null
-
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <MyAppBar height={appBarHeight} />
-      <div className={classes.drawerAndContentContainer}>
-        <MyDrawer marginTop={appBarHeight} />
-        {children}
-      </div>
-    </div>
-  )
-}
 
 export default withRouter(Menu)

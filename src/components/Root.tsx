@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 interface RootProps extends React.HTMLAttributes<HTMLDivElement> {
-  tittle: string
+  tittle?: string
   paths?: Path[]
 }
 

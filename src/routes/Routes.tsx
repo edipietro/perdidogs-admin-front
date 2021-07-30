@@ -8,7 +8,9 @@ import LostBreedStats from '../views/LostBreedStats'
 import PostAdministration from '../views/PostAdministration'
 import PostCard from '../views/PostCard'
 import PostStatusStats from '../views/PostStats'
+
 import UserStats from '../views/UserStats'
+import UserTable from '../views/UserTable'
 /* import PostAdministration from '../views/PostAdministration' */
 
 const Routes: React.FC = () => {
@@ -24,6 +26,7 @@ const Routes: React.FC = () => {
             <Route path="/estadisticas/usuarios" component={UserStats} />
             <Route path="/estadisticas/publicaciones" component={PostStatusStats} />
             <Route path="/estadisticas/alertas" component={AlertStats} />
+            <Route path="/estadisticas/tablaUsuarios" component={UserTable} />
             <Route path="/" component={PostAdministration} />
           </Switch>
         </Menu>

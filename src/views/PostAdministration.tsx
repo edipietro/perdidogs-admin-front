@@ -34,6 +34,7 @@ import { Picture } from '../types/model/Picture'
 import UserContext from '../contexts/UserContext'
 import Chip from '../components/Chip'
 import MyBox from '../components/MyStyledComponents/MyBox'
+import PetCard from '../components/PetCard'
 
 const PostAdministration: React.FC = () => {
   const classes = useStyles()
@@ -283,64 +284,7 @@ const PostAdministration: React.FC = () => {
               caption={caption}
               style={{ maxWidth: '640px' }}
             /> */
-                <div
-                  style={{
-                    backgroundSize: 'cover',
-                    backgroundRepeat: ' no-repeat',
-                    flexDirection: 'column',
-                    backgroundImage: `linear-gradient(transparent, rgb(0 0 0 / 65%), rgb(0 0 4 / 80%)),url(${post.pictures[0].url})`,
-                    width: 290,
-                    height: 250,
-                    borderRadius: 12,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    /*   alignItems: 'flex-end', */
-                    padding: '16px 16px 4px 16px'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Chip status={post.postStatus}></Chip>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ fontSize: 16 }}>{post.description}</div>
-                    {/*   {post.pet.breed.description} */}
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                      {post.postStatus.Id !== 2 && (
-                        <div
-                          onClick={() => handleCancelPost(post)}
-                          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                        >
-                          <IconButton
-                            color="secondary"
-                            onClick={() => handleCancelPost(post)}
-                            disableRipple
-                            disableFocusRipple
-                          >
-                            <Icon className={classes.iconBlock}>block</Icon>
-                          </IconButton>
-                          <div style={{ fontSize: 16 }}> Rechazar</div>
-                        </div>
-                      )}
-                      {post.postStatus.Id !== 1 && (
-                        <div
-                          onClick={() => handleAceptPost(post)}
-                          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                        >
-                          <IconButton
-                            color="primary"
-                            onClick={() => handleAceptPost(post)}
-                            disableRipple
-                            disableFocusRipple
-                          >
-                            <Icon className={classes.iconAcept}>done</Icon>
-                          </IconButton>
-                          <div style={{ fontSize: 16 }}> Aceptar</div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <PetCard onCancel={handleCancelPost} onAcept={handleAceptPost} post={post}></PetCard>
               ))}
             </div>
           ) : (

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { SERVER_URL_ADMIN } from '../config/Rest'
 import { ActiveOverInactivePercent } from '../types/model/ActiveOverInactivePercent'
 import { Stat } from '../types/model/Stat'
+import { UserTableDTO } from '../types/model/UserTableDTO'
 
 class StadisticService {
   axiosConfig = { timeout: 3000 }
@@ -46,6 +47,11 @@ class StadisticService {
         this.axiosConfig
       )
     ).data
+  }
+
+  async userTable(): Promise<UserTableDTO[]> {
+    console.log((await axios.put<UserTableDTO[]>(`${SERVER_URL_ADMIN}/stats/statFalopa`, this.axiosConfig)).data)
+    return (await axios.put<UserTableDTO[]>(`${SERVER_URL_ADMIN}/stats/statFalopa`, this.axiosConfig)).data
   }
 
   async porcentajeDeAlertasActivasSobreInactivas(): Promise<ActiveOverInactivePercent> {

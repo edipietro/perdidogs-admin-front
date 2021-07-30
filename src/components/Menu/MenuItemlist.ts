@@ -51,6 +51,11 @@ export const MenuitemList: MenuitemListProps[] = [
         label: 'Estado de publicaciones',
         icon: 'plagiarism',
         route: '/publicaciones'
+      },
+      {
+        label: 'Usuarios',
+        icon: 'Persons',
+        route: '/tablaUsuarios'
       }
     ]
   }

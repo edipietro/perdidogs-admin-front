@@ -20,7 +20,8 @@ import {
   MenuItem,
   Select,
   IconButton,
-  Icon
+  Icon,
+  useTheme
 } from '@material-ui/core'
 import { Color } from '../types/model/Color'
 import { Size } from '../types/model/Size'
@@ -169,6 +170,10 @@ const PostAdministration: React.FC = () => {
     }
   }
 
+  const emptyPosts = posts.length == 0
+
+  const theme = useTheme()
+
   return (
     <MuiPickersUtilsProvider locale={esLocale} utils={DateFnsUtils}>
       <Root className={classes.root} paths={paths}>
@@ -265,9 +270,11 @@ const PostAdministration: React.FC = () => {
             />
           </div>
         </MyBox>
-        <MyBox className={classes.postsGrid}>
-          {posts.map((post, index) => (
-            /*        <Galleria
+        <MyBox>
+          {!emptyPosts ? (
+            <div className={classes.postsGrid}>
+              {posts.map((post, index) => (
+                /*        <Galleria
               value={post.pictures}
               responsiveOptions={responsiveOptions}
               numVisible={1}
@@ -276,30 +283,69 @@ const PostAdministration: React.FC = () => {
               caption={caption}
               style={{ maxWidth: '640px' }}
             /> */
-            <div
-              style={{
-                backgroundSize: 'cover',
-                backgroundRepeat: ' no-repeat',
-                backgroundImage: `linear-gradient(transparent, rgb(0 0 0 / 45%), rgb(0 0 4 / 68%)),url(${post.pictures[0].url})`,
-                width: 290,
-                height: 250,
-                borderRadius: 12
-              }}
-            >
-              {post.pet.breed.description}
-              {post.postStatus.Id !== 2 && (
-                <IconButton color="secondary" onClick={() => handleCancelPost(post)} disableRipple disableFocusRipple>
-                  <Icon className={classes.icon}>block</Icon>
-                </IconButton>
-              )}
-              {post.postStatus.Id !== 1 && (
-                <IconButton color="primary" onClick={() => handleAceptPost(post)} disableRipple disableFocusRipple>
-                  <Icon className={classes.icon}>done</Icon>
-                </IconButton>
-              )}
-              <Chip status={post.postStatus}> </Chip>
+                <div
+                  style={{
+                    backgroundSize: 'cover',
+                    backgroundRepeat: ' no-repeat',
+                    flexDirection: 'column',
+                    backgroundImage: `linear-gradient(transparent, rgb(0 0 0 / 65%), rgb(0 0 4 / 80%)),url(${post.pictures[0].url})`,
+                    width: 290,
+                    height: 250,
+                    borderRadius: 12,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    /*   alignItems: 'flex-end', */
+                    padding: '16px 16px 4px 16px'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Chip status={post.postStatus}></Chip>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: 16 }}>{post.description}</div>
+                    {/*   {post.pet.breed.description} */}
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                      {post.postStatus.Id !== 2 && (
+                        <div
+                          onClick={() => handleCancelPost(post)}
+                          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                        >
+                          <IconButton
+                            color="secondary"
+                            onClick={() => handleCancelPost(post)}
+                            disableRipple
+                            disableFocusRipple
+                          >
+                            <Icon className={classes.iconBlock}>block</Icon>
+                          </IconButton>
+                          <div style={{ fontSize: 16 }}> Rechazar</div>
+                        </div>
+                      )}
+                      {post.postStatus.Id !== 1 && (
+                        <div
+                          onClick={() => handleAceptPost(post)}
+                          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                        >
+                          <IconButton
+                            color="primary"
+                            onClick={() => handleAceptPost(post)}
+                            disableRipple
+                            disableFocusRipple
+                          >
+                            <Icon className={classes.iconAcept}>done</Icon>
+                          </IconButton>
+                          <div style={{ fontSize: 16 }}> Aceptar</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className={classes.noResultsContainer}>No hay resultados</div>
+          )}
         </MyBox>
       </Root>
     </MuiPickersUtilsProvider>
@@ -315,6 +361,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       /* padding: '0px 16px', */
       /*   alignItems: 'center', */
+
       width: '100%'
       /* gap: 32 */
       /*   alignItems: 'center' */
@@ -325,6 +372,7 @@ const useStyles = makeStyles((theme: Theme) =>
       /*   justifyContent: 'space-between', */
       width: '100%',
       gap: 16,
+      marginBottom: 16,
       alignItems: 'flex-end'
     },
     datePickersContainer: {
@@ -369,13 +417,25 @@ const useStyles = makeStyles((theme: Theme) =>
       /*  justifyContent: 'space-between', */
       rowGap: 24,
       marginTop: 16,
+      /*   height: '100%', */
       /*     flexWrap: 'wrap' */
       /*  gridAutoFlow: 'column', */
       gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))'
       /*     flexWrap: 'wrap' */
     },
-    icon: {
-      color: theme.palette.primary.main
+    iconBlock: {
+      color: '#BF1A1A'
+    },
+    iconAcept: {
+      color: '#2AA763'
+    },
+    noResultsContainer: {
+      fontSize: 20,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%'
+      /*  padding: 8 */
     }
   })
 )

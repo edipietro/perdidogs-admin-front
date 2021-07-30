@@ -40,17 +40,17 @@ export const MenuitemList: MenuitemListProps[] = [
       {
         label: 'Estado de usuarios',
         icon: 'person',
-        route: '/estadistica2'
+        route: '/usuarios'
       },
       {
         label: 'Estado de alertas',
         icon: 'notifications_active',
-        route: '/estadistica3'
+        route: '/alertas'
       },
       {
         label: 'Estado de publicaciones',
         icon: 'plagiarism',
-        route: '/estadistica5'
+        route: '/publicaciones'
       }
     ]
   }

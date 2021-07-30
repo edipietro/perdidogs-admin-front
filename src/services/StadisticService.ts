@@ -26,8 +26,16 @@ class StadisticService {
     ).data
   }
 
-  async calculateLostBreeds(): Promise<Stat[]> {
-    return (await axios.put<Stat[]>(`${SERVER_URL_ADMIN}/stats/calculateLostBreeds`, {}, this.axiosConfig)).data
+  async calculatePostLostBreeds(): Promise<Stat[]> {
+    return (await axios.put<Stat[]>(`${SERVER_URL_ADMIN}/stats/calculatePostLostBreeds`, {}, this.axiosConfig)).data
+  }
+
+  async calculateAlertLostBreeds(): Promise<Stat[]> {
+    return (await axios.put<Stat[]>(`${SERVER_URL_ADMIN}/stats/calculateAlertLostBreeds`, {}, this.axiosConfig)).data
+  }
+
+  async calculatePostStatus(): Promise<Stat[]> {
+    return (await axios.put<Stat[]>(`${SERVER_URL_ADMIN}/stats/calculatePostStatus`, {}, this.axiosConfig)).data
   }
 
   async porcentajeDeRazasPerdidas(): Promise<ActiveOverInactivePercent> {
